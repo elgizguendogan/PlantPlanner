@@ -2,6 +2,21 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTime>
+#include <QDate>
+#include <QCalendar>
+#include <QTableWidget>
+#include <QListWidget>
+#include <QComboBox>
+#include <QMessageBox>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QGraphicsTextItem>
+#include <QSignalSpy>
+
+#include "plantmanager.h"
+#include "weather.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -12,10 +27,34 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(PlantManager *plantManager, QWidget *parent = nullptr);
     ~MainWindow();
 
+protected:
+    void timerEvent(QTimerEvent *event);
 private:
     Ui::MainWindow *ui;
+    PlantManager *m_plantManager;
+    QGraphicsScene *m_scene;
+
+
+    void setupSignals();
+    void setupWidgets();
+    void setupWeather();
+    void resetEdit();
+    void initializePlantTable();
+    void updatePlantTable();
+
+    QHash<QListWidgetItem*, PlantEntry*> m_entryMap;
+
+private slots:
+    void goToPlantManagement();
+    void addPlant();
+    void removePlant();
+    void editPlant();
+    void backToMainPage();
+    void cancelChanges();
+    void saveChanges();
+
 };
 #endif // MAINWINDOW_H
