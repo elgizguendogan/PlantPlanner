@@ -1,8 +1,4 @@
 <RCC>
-    <qresource prefix="/images">
-        <file>RaspiScreen_plant.png</file>
-        <file>backgroundImage.png</file>
-    </qresource>
     <qresource prefix="/weatherIcons">
         <file>icons/02d.png</file>
         <file>icons/01d.png</file>
@@ -22,5 +18,11 @@
         <file>icons/04d.png</file>
         <file>icons/03d.png</file>
         <file>icons/10n.png</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>backgroundImage.png</file>
+    </qresource>
+    <qresource prefix="/data">
+        <file>plantData.xml</file>
     </qresource>
 </RCC>

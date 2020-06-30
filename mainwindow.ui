@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
+    <width>323</width>
     <height>240</height>
    </rect>
   </property>
@@ -83,6 +83,16 @@
         </font>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="2">
+         <widget class="QGraphicsView" name="weatherView">
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(226, 237, 224);</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" rowspan="2">
+         <widget class="QTableWidget" name="plantTable"/>
+        </item>
         <item row="2" column="2">
          <widget class="QPushButton" name="managePlantsButton">
           <property name="font">
@@ -92,16 +102,6 @@
           </property>
           <property name="text">
            <string>Manage Plants</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" rowspan="2">
-         <widget class="QTableWidget" name="plantTable"/>
-        </item>
-        <item row="1" column="2">
-         <widget class="QGraphicsView" name="weatherView">
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(226, 237, 224);</string>
           </property>
          </widget>
         </item>
@@ -139,7 +139,7 @@
           <property name="font">
            <font>
             <family>Geneva</family>
-            <pointsize>13</pointsize>
+            <pointsize>12</pointsize>
             <weight>75</weight>
             <italic>false</italic>
             <bold>true</bold>
@@ -392,7 +392,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>320</width>
+     <width>323</width>
      <height>22</height>
     </rect>
    </property>

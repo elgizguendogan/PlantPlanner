@@ -121,10 +121,13 @@ void MainWindow::initializePlantTable()
     ui->plantTable->verticalHeader()->setVisible(false);
     ui->plantTable->setRowCount(0);
     ui->plantTable->setColumnCount(2);
-    ui->plantTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->plantTable->setColumnWidth(0,96);
+    ui->plantTable->setColumnWidth(1,40);
+    //ui->plantTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     QStringList tableHeader;
     tableHeader<<"Plants"<<"Cups";
     ui->plantTable->setHorizontalHeaderLabels(tableHeader);
+    ui->plantTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 void MainWindow::updatePlantTable()
@@ -278,9 +281,8 @@ void MainWindow::saveChanges()
 
 void MainWindow::readFromXml()
 {
-    QString filePath = QCoreApplication::applicationDirPath();
-    filePath.append("/plantData.xml");
-    QFile dataFile(filePath);
+
+    QFile dataFile(":/data/plantData.xml");
 
     QDomDocument domDoc;
 
@@ -337,9 +339,6 @@ void MainWindow::readFromXml()
 
 void MainWindow::writeToXml()
 {
-    QString filePath = QCoreApplication::applicationDirPath();
-    filePath.append("/plantData.xml");
-
     QDomDocument domDoc;
     QDomElement root = domDoc.createElement("Plants");
     domDoc.appendChild(root);
@@ -361,19 +360,19 @@ void MainWindow::writeToXml()
 
     }
 
-    QFile dataFile(filePath);
+    QFile dataFile(":/data/plantData.xml");
 
 
     if(!dataFile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text))
     {
-        qDebug() << "Failed to open file for writting";
+        //qDebug() << "Failed to open file for writting";
     }
     else
     {
         QTextStream stream(&dataFile);
         stream << domDoc.toString();
         dataFile.close();
-        qDebug() << "Finished";
+        //qDebug() << "Finished";
     }
 
 }
