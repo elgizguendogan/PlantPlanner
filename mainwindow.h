@@ -17,6 +17,8 @@
 #include <QFile>
 #include <QtXml>
 #include <QXmlStreamWriter>
+#include <QStandardPaths>
+#include <QDir>
 
 #include "plantmanager.h"
 #include "weather.h"

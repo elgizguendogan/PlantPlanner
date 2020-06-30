@@ -282,7 +282,18 @@ void MainWindow::saveChanges()
 void MainWindow::readFromXml()
 {
 
-    QFile dataFile(":/data/plantData.xml");
+    QString appPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    QDir dir(appPath);
+    if (!dir.exists()) {
+        dir.mkpath(appPath);
+    }
+
+    //QString filePath = QDir::currentPath();
+    QString filePath = appPath.append("/plantData.xml");
+    //QCoreApplication::applicationDirPath();
+
+    //filePath.append("/plantData.xml");
+    QFile dataFile(filePath);
 
     QDomDocument domDoc;
 
@@ -359,8 +370,16 @@ void MainWindow::writeToXml()
         root.appendChild(xmlElem);
 
     }
+    //QString filePath = QDir::currentPath();
+    //QCoreApplication::applicationDirPath();
 
-    QFile dataFile(":/data/plantData.xml");
+    //filePath.append("/plantData.xml");
+
+    QString appPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    //QString filePath = QDir::currentPath();
+    QString filePath = appPath.append("/plantData.xml");
+
+    QFile dataFile(filePath);
 
 
     if(!dataFile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text))

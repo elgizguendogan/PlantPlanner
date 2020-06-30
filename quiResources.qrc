@@ -22,7 +22,4 @@
     <qresource prefix="/images">
         <file>backgroundImage.png</file>
     </qresource>
-    <qresource prefix="/data">
-        <file>plantData.xml</file>
-    </qresource>
 </RCC>
