@@ -11,6 +11,7 @@ public:
 
     PlantEntry *createEntry();
     PlantEntry *addEntry(PlantEntry *entry);
+
     bool removeEntry(PlantEntry *entry);
     bool isEntryExists(PlantEntry *entry);
     bool updateEntry(PlantEntry *entry);
@@ -18,6 +19,8 @@ public:
     int cupNumber(PlantEntry *entry);
     Plants::PlantsList whichPlantsToWater(const int indexToday);
     QString getEntryName(PlantEntry *entry);
+    PlantEntry *getElement(const int index);
+    int plantCount();
 
 signals:
 

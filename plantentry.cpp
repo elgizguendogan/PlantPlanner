@@ -16,7 +16,6 @@ void PlantEntry::setName(const QString &name)
         m_name = name;
         emit nameChanged();
     }
-
 }
 
 QBitArray PlantEntry::waterDays() const
@@ -49,22 +48,6 @@ void PlantEntry::setCups(int cups)
 {
     m_cups = cups;
 }
-
-/*void PlantEntry::setOneWaterDay(const int index)
-{
-    if ( index < 8 && index >= 0) {
-        m_waterDays[index] = true;
-        emit oneWaterDaySet();
-    }
-}
-
-void PlantEntry::unsetOneWaterDat(const int index)
-{
-    if ( index < 8 && index >= 0) {
-        m_waterDays[index] = false;
-        emit oneWaterDayUnset();
-    }
-}*/
 
 
 

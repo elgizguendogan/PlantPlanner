@@ -13,6 +13,10 @@
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
 #include <QSignalSpy>
+#include <QPixmap>
+#include <QFile>
+#include <QtXml>
+#include <QXmlStreamWriter>
 
 #include "plantmanager.h"
 #include "weather.h"
@@ -36,6 +40,8 @@ private:
     Ui::MainWindow *ui;
     PlantManager *m_plantManager;
     QGraphicsScene *m_scene;
+    QFile m_dataFile;
+    QDomDocument m_document;
 
 
     void setupSignals();
@@ -44,6 +50,8 @@ private:
     void resetEdit();
     void initializePlantTable();
     void updatePlantTable();
+    void readFromXml();
+    void writeToXml();
 
     QHash<QListWidgetItem*, PlantEntry*> m_entryMap;
 

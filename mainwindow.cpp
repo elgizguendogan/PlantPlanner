@@ -12,7 +12,6 @@ MainWindow::MainWindow(PlantManager *plantManager, QWidget *parent)
     //Create the scene and the gui, get the data and create the graphics view
     //Creating a timer for the weather function
     m_scene = new QGraphicsScene(this);
-    //m_scene->setSceneRect(-60,-54,120,108);
     ui->weatherView->setScene(m_scene);
     ui->weatherView->setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
     ui->weatherView->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
@@ -20,6 +19,7 @@ MainWindow::MainWindow(PlantManager *plantManager, QWidget *parent)
     setupWeather();
     setupWidgets();
     setupSignals();
+    readFromXml();
 
     this->setStyleSheet("QMainWindow#MainWindow{background-image: url(:/images/backgroundImage.png);background-repeat: no-repeat;} ");
     ui->stackedWidget->setCurrentWidget(ui->mainPage);
@@ -27,6 +27,7 @@ MainWindow::MainWindow(PlantManager *plantManager, QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    writeToXml();
     delete ui;
 }
 
@@ -51,12 +52,10 @@ void MainWindow::setupSignals()
 
 void MainWindow::setupWidgets()
 {
-    
     //Setup main table
     initializePlantTable();
 
     //Setup days to water list
-    //ui->dayList->setSelectionModel()
     QStringList days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
     for ( int i=0; i < 7;++i) {
         QListWidgetItem* newItem = new QListWidgetItem(days[i], ui->dayList);
@@ -101,17 +100,8 @@ void MainWindow::setupWeather()
         QPixmap icon2;
         icon2.load(":/weatherIcons/icons/"+weatherManager->getIconName()+".png");
         icon->setPixmap(icon2);
-        //icon->setPixmap(weatherManager->getIcon());
         icon->setPos(30,-60);
         m_scene->addItem(icon);
-
-        //QGraphicsTextItem *description = new QGraphicsTextItem;
-        //description->setPlainText(weatherManager->getDescription());
-        /*description->setPlainText("thunderstorms");
-        description->setTextWidth(40);
-        description->setFont(QFont("Geneva", 10));
-        description->setPos(35,-20);
-        m_scene->addItem(description);*/
 
     }
 }
@@ -160,7 +150,6 @@ void MainWindow::updatePlantTable()
         }
     }
 }
-
 
 void MainWindow::goToPlantManagement()
 {
@@ -241,16 +230,16 @@ void MainWindow::saveChanges()
         isInfoComplete = false;
     }
     // Set the Watering Days
-    QBitArray water_days(7);
+    QBitArray waterDays(7);
     for ( int i=0; i < 7;++i) {
        if(ui->dayList->item(i)->checkState()) {
-           water_days[i] = true;
+           waterDays[i] = true;
        }
        else {
-           water_days[i] = false;
+           waterDays[i] = false;
        }
     }
-    newEntry->setWaterDays(water_days);
+    newEntry->setWaterDays(waterDays);
 
     //Set the cups number
     if (ui->cupsNumber->currentIndex() != 0) {
@@ -276,6 +265,7 @@ void MainWindow::saveChanges()
             ui->plantList->addItem( newEntry->name() );
             auto item = ui->plantList->item( ui->plantList->count() - 1 );
             m_entryMap.insert(item, newEntry);
+            writeToXml();
         }
 
         updatePlantTable();
@@ -284,6 +274,108 @@ void MainWindow::saveChanges()
         ui->stackedWidget->setCurrentWidget(ui->plantManagePage);
         resetEdit();
     }
+}
+
+void MainWindow::readFromXml()
+{
+    QString filePath = QCoreApplication::applicationDirPath();
+    filePath.append("/plantData.xml");
+    QFile dataFile(filePath);
+
+    QDomDocument domDoc;
+
+    if(!dataFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        //qDebug() << "Failed to open file";
+
+    }
+    else
+    {
+        if (!domDoc.setContent(&dataFile))
+        {
+            //qDebug() << "Failed to load document";
+
+        }
+        dataFile.close();
+    }
+
+    QDomElement root = domDoc.firstChildElement();
+    QDomNodeList nodeList = root.elementsByTagName("Plant");
+    int listCount = nodeList.count();
+
+    for (int i=0; i < listCount; ++i) {
+        QDomNode plantNode = nodeList.at(i);
+        if (plantNode.isElement()) {
+            QDomElement plantElem = plantNode.toElement();
+            PlantEntry *newEntry = new PlantEntry(this);;
+            newEntry->setName(plantElem.attribute("Name"));
+            newEntry->setCups(plantElem.attribute("Cups").toInt());
+            QBitArray waterDays(7);
+            waterDays[0] = (plantElem.attribute("Monday") == "1" ? true : false);
+            waterDays[1] = (plantElem.attribute("Tuesday") == "1" ? true : false);
+            waterDays[2] = (plantElem.attribute("Wednesday") == "1" ? true : false);
+            waterDays[3] = (plantElem.attribute("Thursday") == "1" ? true : false);
+            waterDays[4] = (plantElem.attribute("Friday") == "1" ? true : false);
+            waterDays[5] = (plantElem.attribute("Saturday") == "1" ? true : false);
+            waterDays[6] = (plantElem.attribute("Sunday") == "1" ? true : false);
+            newEntry->setWaterDays(waterDays);
+            m_plantManager->addEntry(newEntry);
+            ui->plantList->addItem( newEntry->name() );
+            auto item = ui->plantList->item( ui->plantList->count() - 1 );
+            m_entryMap.insert(item, newEntry);
+        }
+    }
+
+    if (listCount > 0) {
+        updatePlantTable();
+        ui->editPlantButton->setDisabled(false);
+        ui->removePlantButton->setDisabled(false);
+    }
+
+
+}
+
+void MainWindow::writeToXml()
+{
+    QString filePath = QCoreApplication::applicationDirPath();
+    filePath.append("/plantData.xml");
+
+    QDomDocument domDoc;
+    QDomElement root = domDoc.createElement("Plants");
+    domDoc.appendChild(root);
+
+    int plantCount =  m_plantManager->plantCount();
+    for (int i = 0; i < plantCount; ++i) {
+        PlantEntry *tempElem = m_plantManager->getElement(i);
+        QDomElement xmlElem = m_document.createElement("Plant");
+        xmlElem.setAttribute("Name", tempElem->name());
+        xmlElem.setAttribute("Cups", tempElem->cups());
+        xmlElem.setAttribute("Monday", tempElem->isWaterDaySet(0));
+        xmlElem.setAttribute("Tuesday", tempElem->isWaterDaySet(1));
+        xmlElem.setAttribute("Wednesday", tempElem->isWaterDaySet(2));
+        xmlElem.setAttribute("Thursday", tempElem->isWaterDaySet(3));
+        xmlElem.setAttribute("Friday", tempElem->isWaterDaySet(4));
+        xmlElem.setAttribute("Saturday", tempElem->isWaterDaySet(5));
+        xmlElem.setAttribute("Sunday", tempElem->isWaterDaySet(6));
+        root.appendChild(xmlElem);
+
+    }
+
+    QFile dataFile(filePath);
+
+
+    if(!dataFile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text))
+    {
+        qDebug() << "Failed to open file for writting";
+    }
+    else
+    {
+        QTextStream stream(&dataFile);
+        stream << domDoc.toString();
+        dataFile.close();
+        qDebug() << "Finished";
+    }
+
 }
 
 

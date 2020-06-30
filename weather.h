@@ -17,7 +17,7 @@
 #include <QGeoPositionInfoSource>
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include <QPixmap>
+
 
 
 class Weather : public QObject
@@ -39,13 +39,10 @@ public:
 signals:
     void readyToGetWeatherInfo();
     void iconIdReady();
-    //void iconDataDownloaded();
 public slots:  
     void positionUpdated(const QGeoPositionInfo &info);
     void getWeatherData();
     void weatherDataFinish(QNetworkReply *reply);
-    //void getWeatherIcon();
-    //void iconDownload(QNetworkReply* pReply);
 
 private:
    QNetworkAccessManager m_manager;

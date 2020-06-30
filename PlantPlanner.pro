@@ -1,4 +1,4 @@
-QT       += core gui network positioning testlib
+QT       += core gui network positioning testlib xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

@@ -15,6 +15,7 @@ public:
 
     PlantEntry *createPlant();
     PlantEntry *addPlant(PlantEntry *plant);
+
     bool removePlant(PlantEntry *plant);
     bool updatePlant(PlantEntry *plant);
     bool findPlant(PlantEntry *plant);
@@ -22,6 +23,8 @@ public:
     int getCupsNumber(PlantEntry *plant);
     PlantsList toWater(const int dayOfWeek);
     QString getPlantName(PlantEntry *plant);
+    int getNumberofPlants();
+    PlantEntry *getElement(const int index);
 
 signals:
     void entryAdded(PlantEntry *);

@@ -20,8 +20,6 @@ public:
     QBitArray waterDays() const;
     void setWaterDays(const QBitArray &waterDays);
 
-    //void setOneWaterDay(const int index);
-    //void unsetOneWaterDat(const int index);
     bool isWaterDaySet(const int index);
 
     int cups() const;
@@ -30,8 +28,6 @@ public:
 signals:
     void nameChanged();
     void waterDaysChanged();
-    //void oneWaterDaySet();
-    //void oneWaterDayUnset();
 
 public slots:
 

@@ -95,3 +95,13 @@ QString Plants::getPlantName(PlantEntry *plant)
         return {};
     }
 }
+
+int Plants::getNumberofPlants()
+{
+    return m_plantList.count();
+}
+
+PlantEntry *Plants::getElement(const int index)
+{
+    return m_plantList[index];
+}

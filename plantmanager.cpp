@@ -46,4 +46,14 @@ QString PlantManager::getEntryName(PlantEntry *entry)
     return m_plants->getPlantName(entry);
 }
 
+PlantEntry *PlantManager::getElement(const int index)
+{
+    return m_plants->getElement(index);
+}
+
+int PlantManager::plantCount()
+{
+    return m_plants->getNumberofPlants();
+}
+
 
