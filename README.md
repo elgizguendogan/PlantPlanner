@@ -4,8 +4,6 @@ PlantPlanner is a small application to schedule the watering days of your plants
 
 <img src="images/main_screen.png" width = 300> <img src="images/plantlist_screen.png" width = 300> <img src="images/edit_screen.png" width = 300>
 
-
-
 ## Requirements
 
 - Qt 5.14+ ( A lower Qt5 version can also be okay but it is not tested with the Qt versions below 5.14)
