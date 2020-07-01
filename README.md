@@ -11,15 +11,15 @@ PlantPlanner is a small application to schedule the watering days of your plants
 
 ## Installation 
 
-- MacOs
+- ### MacOs
   In the source files, there is a .dmg file which can be used directly to setup the application.
 
-- Windows / Linux
+- ### Windows / Linux
   You can run and deploy the project directly from the Qt Creator. For detailed information about deploying an application from Qt Creator, please refer to this [link](https://doc.qt.io/qt-5/deployment.html).
 
 ## Future Work
 
-- Currently working on the embedded version of the application in Raspberry Pi 3 Model B.
+- Currently working on the embedded version of the application on Raspberry Pi 3 Model B.
 - When the embedded version is completed, with the help of humidity sensors, more in-depth tracking is planned.
 
 ## References
