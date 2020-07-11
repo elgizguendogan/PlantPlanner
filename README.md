@@ -19,8 +19,7 @@ PlantPlanner is a small application to schedule the watering days of your plants
 
 ## Future Work
 
-- Currently working on the embedded version of the application on Raspberry Pi 3 Model B.
-- When the embedded version is completed, with the help of humidity sensors, more in-depth tracking is planned.
+- Connection with the humidify sensors to track soil data.
 
 ## References
 
